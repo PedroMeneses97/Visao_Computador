@@ -66,16 +66,29 @@ int main (void)
 
 
     // RGB To gray
-    image = vc_read_image("./Images/Additional/fruits.ppm");
+    // image = vc_read_image("./HSVTestImage01.ppm");
 
-    IVC* auxImg;
-    auxImg = vc_image_new(image->width,image->height,3,image->levels);
+    // IVC* auxImg;
+    // auxImg = vc_image_new(image->width,image->height,3,image->levels);
 
-    // vc_rgb_to_gray(image,auxImg);
-    vc_rgb_to_hsv(image,auxImg);
-    vc_write_image("fruits2.ppm", auxImg); // Write the image with the filename
+    // // vc_rgb_to_gray(image,auxImg);
+    // vc_rgb_to_hsv(image,auxImg);
+    // vc_write_image("./hsv.ppm", auxImg); // Write the image with the filename
 
-    vc_image_free(image);
+    // vc_image_free(image);
+
+    // HSV -> SEG
+    IVC* ImgHSV;
+    IVC* AuxImgHSV;
+    ImgHSV = vc_read_image("./hsv.ppm");
+    AuxImgHSV = vc_image_new(ImgHSV->width,ImgHSV->height,1,ImgHSV->levels);
+
+    vc_hsv_to_seg(ImgHSV,AuxImgHSV);
+    vc_write_image("./fruitsseg.ppm", AuxImgHSV); // Write the image with the filename
+
+    // vc_image_free(ImgHSV);
+    // vc_image_free(AuxImgHSV);
+
 
     printf("Press any key to exit... In");
     getchar();

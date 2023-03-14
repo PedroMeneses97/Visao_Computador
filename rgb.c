@@ -361,8 +361,8 @@ int vc_rgb_to_hsv(IVC *src, IVC *dst){
             
 
             // Cálcular Máximo e Mínimo
-            max = (red > green && red > blue) ? red : (green > red && green > blue) ? green : blue;
-            min = (red < green && red < blue) ? red : (green < red && green < blue) ? green : blue;
+            max = (red >= green && red >= blue) ? red : (green >= red && green >= blue) ? green : blue;
+            min = (red <= green && red <= blue) ? red : (green <= red && green <= blue) ? green : blue;
 
             // Declarar os valores para o HSV
             value = max;
@@ -391,4 +391,65 @@ int vc_rgb_to_hsv(IVC *src, IVC *dst){
     }
 
     return 1;
+}
+
+
+int vc_hsv_to_seg(IVC *src, IVC *dst){
+
+    // Info da Source Image (src)
+    unsigned char *datasrc = (unsigned char *) src->data;
+    int bytesperline_src = src->width * src->channels;
+    int channels_src = src->channels;
+
+    // Info da Imagem Destino (dst)
+    unsigned char *datadst = (unsigned char *) dst->data;
+    int bytesperline_dst = dst->width * dst->channels;
+    int channels_dst = dst->channels;
+
+    // Width e Height da imagem Src
+    int width = src->width; 
+    int height = src->height;
+
+    // Aux Variable
+    int x, y;
+    long int pos_src, pos_dst; 
+
+    // Hsv floats
+    float hue,saturation,value;
+
+    // Verificação de erros
+    if((src->width <= 0) || (src->height <= 0) || (src->data == NULL)) return 0; 
+    if((src->width != dst->width) || (src->height != dst->height)) return 0;
+    if((src->channels != 3) || (dst->channels != 1)) return 0;
+    
+    for (y = 0; y < height; y++){
+
+        for (x = 0; x < width; x++){
+            
+
+            pos_src = y * bytesperline_src + x * channels_src; // Posição src
+            pos_dst = y * bytesperline_dst + x * channels_dst; // Posição dst
+
+            // // pegar na hue, saturation e value 
+            hue = ((float) datasrc[pos_src] / 255) * 360; // hue
+            saturation = (float) datasrc[pos_src + 1] / 255; // saturation
+            value = (float) datasrc [pos_src + 2] / 255; // value
+
+            // printf("%f",hue);
+            if( 
+                (hue >= 58 && hue <= 61) &&
+                (saturation >= 0.81 && saturation <= 1) &&
+                (value >= 0.87 && value <= 1) ){
+
+                dst->data[pos_dst] = 255;
+            }
+            else{
+                dst->data[pos_dst] = 0;
+            }
+           
+        }
+    }
+
+    return 1;
+
 }
