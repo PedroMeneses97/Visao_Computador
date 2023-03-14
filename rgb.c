@@ -361,8 +361,8 @@ int vc_rgb_to_hsv(IVC *src, IVC *dst){
             
 
             // Cálcular Máximo e Mínimo
-            max = (red > green && red > blue) ? red : (green > red && green > blue) ? green : blue;
-            min = (red < green && red < blue) ? red : (green < red && green < blue) ? green : blue;
+            max = (red >= green && red >= blue) ? red : (green >= red && green >= blue) ? green : blue;
+            min = (red <= green && red <= blue) ? red : (green <= red && green <= blue) ? green : blue;
 
             // Declarar os valores para o HSV
             value = max;
