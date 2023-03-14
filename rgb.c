@@ -432,14 +432,14 @@ int vc_hsv_to_seg(IVC *src, IVC *dst){
 
             // // pegar na hue, saturation e value 
             hue = ((float) datasrc[pos_src] / 255) * 360; // hue
-            saturation = (float) datasrc[pos_src + 1] / 255; // saturation
-            value = (float) datasrc [pos_src + 2] / 255; // value
+            saturation = ((float) datasrc[pos_src + 1] / 255); // saturation
+            value = ((float) datasrc [pos_src + 2] / 255); // value
 
             // printf("%f",hue);
             if( 
-                (hue >= 58 && hue <= 61) &&
-                (saturation >= 0.81 && saturation <= 1) &&
-                (value >= 0.87 && value <= 1) ){
+                (hue >= 57 && hue <= 64) &&
+                (saturation >= 0.72 && saturation <= 1) &&
+                (value >= 0.96 && value <= 1) ){
 
                 dst->data[pos_dst] = 255;
             }
