@@ -435,11 +435,10 @@ int vc_hsv_to_seg(IVC *src, IVC *dst){
             saturation = ((float) datasrc[pos_src + 1] / 255); // saturation
             value = ((float) datasrc [pos_src + 2] / 255); // value
 
-            // printf("%f",hue);
             if( 
-                (hue >= 57 && hue <= 64) &&
-                (saturation >= 0.72 && saturation <= 1) &&
-                (value >= 0.96 && value <= 1) ){
+                (hue >= 39 && hue <= 66) &&
+                (saturation >= 0.80 && saturation <= 1) &&
+                (value >= 0.84 && value <= 1) ){
 
                 dst->data[pos_dst] = 255;
             }
