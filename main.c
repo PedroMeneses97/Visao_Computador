@@ -78,17 +78,31 @@ int main (void)
     // vc_image_free(image);
 
     // HSV -> SEG
-    IVC* ImgHSV;
-    IVC* AuxImgHSV;
-    ImgHSV = vc_read_image("./hsv.ppm");
-    AuxImgHSV = vc_image_new(ImgHSV->width,ImgHSV->height,1,ImgHSV->levels);
+    // IVC* ImgHSV;
+    // IVC* AuxImgHSV;
+    // ImgHSV = vc_read_image("./hsv.ppm");
+    // AuxImgHSV = vc_image_new(ImgHSV->width,ImgHSV->height,1,ImgHSV->levels);
 
-    vc_hsv_to_seg(ImgHSV,AuxImgHSV);
-    vc_write_image("./fruitsseg.ppm", AuxImgHSV); // Write the image with the filename
+    // vc_hsv_to_seg(ImgHSV,AuxImgHSV);
+    // vc_write_image("./fruitsseg.ppm", AuxImgHSV); // Write the image with the filename
 
     // vc_image_free(ImgHSV);
     // vc_image_free(AuxImgHSV);
 
+
+    /**
+     * @brief Converter uma imagem de PGM 1 Channel para 3 Channels RGB
+     */
+    IVC* ImgGrayscale;
+    IVC* AuxImgRGB;
+    ImgGrayscale = vc_read_image("./Images/FLIR/flir-04.pgm");
+    AuxImgRGB = vc_image_new(ImgGrayscale->width,ImgGrayscale->height,3,ImgGrayscale->levels);
+
+    vc_scale_gray_to_rgb(ImgGrayscale,AuxImgRGB);
+    vc_write_image("./ImagensGeradas/GrayscaleRGB/grayscaleRGB.ppm", AuxImgRGB); // Write the image with the filename
+
+    vc_image_free(ImgGrayscale);
+    vc_image_free(AuxImgRGB);
 
     printf("Press any key to exit... In");
     getchar();
