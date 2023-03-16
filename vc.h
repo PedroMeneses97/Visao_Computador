@@ -62,3 +62,5 @@ int vc_rgb_to_hsv(IVC *src, IVC *dst);
 // HSV to Segmentation
 int vc_hsv_to_seg(IVC *src, IVC *dst);
 
+// Gray to RGB
+int vc_scale_gray_to_rgb(IVC *src, IVC *dst);

@@ -435,11 +435,10 @@ int vc_hsv_to_seg(IVC *src, IVC *dst){
             saturation = ((float) datasrc[pos_src + 1] / 255); // saturation
             value = ((float) datasrc [pos_src + 2] / 255); // value
 
-            // printf("%f",hue);
             if( 
-                (hue >= 57 && hue <= 64) &&
-                (saturation >= 0.72 && saturation <= 1) &&
-                (value >= 0.96 && value <= 1) ){
+                (hue >= 39 && hue <= 66) &&
+                (saturation >= 0.80 && saturation <= 1) &&
+                (value >= 0.84 && value <= 1) ){
 
                 dst->data[pos_dst] = 255;
             }
@@ -453,3 +452,67 @@ int vc_hsv_to_seg(IVC *src, IVC *dst){
     return 1;
 
 }
+
+
+int vc_scale_gray_to_rgb(IVC *src, IVC *dst){
+
+
+    // Info da Source Image (src)
+    unsigned char *datasrc = (unsigned char *) src->data;
+    int bytesperline_src = src->width * src->channels;
+    int channels_src = src->channels;
+
+    // Info da Imagem Destino (dst)
+    unsigned char *datadst = (unsigned char *) dst->data;
+    int bytesperline_dst = dst->width * dst->channels;
+    int channels_dst = dst->channels;
+
+    // Width e Height da imagem Src
+    int width = src->width; 
+    int height = src->height;
+
+    // Aux Variable
+    int x, y;
+    long int pos_src, pos_dst; 
+    int red, blue, green;
+    
+    // Verificação de erros
+    if((src->width <= 0) || (src->height <= 0) || (src->data == NULL)) return 0; 
+    if((src->width != dst->width) || (src->height != dst->height)) return 0;
+    if((src->channels != 1) || (dst->channels != 3)) return 0;
+    
+    for (y = 0; y < height; y++){
+        for (x = 0; x < width; x++){
+            
+            pos_src = y * bytesperline_src + x * channels_src; // Posição src
+            pos_dst = y * bytesperline_dst + x * channels_dst; // Posição dst
+
+            
+            if(datasrc[pos_src] <= 64){
+                datadst[pos_dst] = 0;
+                datadst[pos_dst + 1] = datasrc[pos_src] * 4 ;
+                datadst[pos_dst + 2] = 255;
+            }
+            else if( datasrc[pos_src] > 64 && datasrc[pos_src] <= 128 ){
+                datadst[pos_dst] = 0;
+                datadst[pos_dst + 1] = 255;
+                datadst[pos_dst + 2] = 255 - (64 - (datasrc[pos_src]  * 4));
+            }
+            else if( datasrc[pos_src] > 128 && datasrc[pos_src] <= 192 ){
+                datadst[pos_dst] = 128 - (datasrc[pos_src] * 4);
+                datadst[pos_dst + 1] = 255 ;
+                datadst[pos_dst + 2] = 0;
+            }
+            else if(datasrc[pos_src] > 192){
+                datadst[pos_dst] = 255;
+                datadst[pos_dst + 1] = 255 - ( 192 - (datasrc[pos_src] * 4) ) ;
+                datadst[pos_dst + 2] = 0;
+            }
+            
+        }
+    }
+
+    return 1;
+
+}
+
