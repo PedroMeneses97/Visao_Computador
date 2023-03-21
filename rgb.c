@@ -1,4 +1,3 @@
-
 #include <ctype.h>
 #include <stdbool.h>
 #include <stdlib.h>
@@ -516,3 +515,128 @@ int vc_scale_gray_to_rgb(IVC *src, IVC *dst){
 
 }
 
+int vc_gray_to_binary(IVC *src, IVC *dst, int threshold)
+{
+    unsigned char *data = (unsigned char *)src->data;
+    int bytesperline = src->width * src->channels;
+    int channels = src->channels;
+
+    int width = src->width;
+    int height = src->height;
+
+    unsigned char *dataaux = (unsigned char *)dst->data;
+    int bytesperaux = dst->width * dst->channels;
+    int channelsaux = dst->channels;
+
+    int x, y;
+    long int pos, posaux;
+    long int gray;
+
+    if ((src->width <= 0) || (src->height <= 0) || (src->data == NULL))
+        return 0;
+    if ((src->width != dst->width) || (src->height != dst->height))
+        return 0;
+    if (channels != 1)
+        return 0;
+
+    for (y = 0; y < height; y++)
+    {
+        for (x = 0; x < width; x++)
+        {
+
+            pos = y * bytesperline + x * channels;
+            posaux = y * bytesperaux + x * channelsaux;
+
+            gray = data[pos];
+            
+            if (gray >= threshold){
+                dataaux[posaux] = 255;
+            }
+            else{
+                dataaux[posaux] = 0;
+            }
+
+        }
+    }
+
+    return 1;
+}
+
+int threshold_media(IVC *src, IVC *dst){
+
+    unsigned char *data = (unsigned char *)src->data;
+    int bytesperline = src->width * src->channels;
+    int channels = src->channels;
+
+    int width = src->width;
+    int height = src->height;
+
+    unsigned char *dataaux = (unsigned char *)dst->data;
+    int bytesperaux = dst->width * dst->channels;
+    int channelsaux = dst->channels;
+
+    int x, y;
+    long int pos, posaux;
+    long int gray;
+    float media=0 ,threshold=0,soma;
+
+    if ((src->width <= 0) || (src->height <= 0) || (src->data == NULL))
+        return 0;
+    if ((src->width != dst->width) || (src->height != dst->height))
+        return 0;
+    if (channels != 1)
+        return 0;
+
+    for (y = 0; y < height; y++)
+    {
+        for (x = 0; x < width; x++)
+        {
+        
+            pos = y * bytesperline + x * channels;
+            posaux = y * bytesperaux + x * channelsaux;
+
+           soma += (float)data[pos];
+
+        }
+    }
+
+
+    media = soma / (width * height);
+
+    for (y = 0; y < height; y++)
+    {
+        for (x = 0; x < width; x++)
+        {
+        
+            pos = y * bytesperline + x * channels;
+            posaux = y * bytesperaux + x * channelsaux;
+
+            gray = data[pos];
+
+    
+            threshold = media;
+            
+            
+            if (gray >= threshold){
+                dataaux[posaux] = 255;
+            }
+            else{
+                dataaux[posaux] = 0;
+            }
+          
+
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+    return 1;
+
+}
