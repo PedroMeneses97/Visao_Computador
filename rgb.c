@@ -505,7 +505,7 @@ int vc_scale_gray_to_rgb(IVC *src, IVC *dst){
             }
             else if(datasrc[pos_src] > 192){
                 datadst[pos_dst] = 255;
-                datadst[pos_dst + 1] = 255 - ( 192 - (datasrc[pos_src] * 4) ) ;
+                datadst[pos_dst + 1] = 255 - ( (datasrc[pos_src] - 192) * 4)  ;
                 datadst[pos_dst + 2] = 0;
             }
             
