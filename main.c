@@ -93,19 +93,34 @@ int main (void)
     /**
      * @brief Converter uma imagem de PGM 1 Channel para 3 Channels RGB
      */
-    IVC* ImgGrayscale;
-    IVC* AuxImgRGB;
-    ImgGrayscale = vc_read_image("./Images/FLIR/flir-04.pgm");
-    AuxImgRGB = vc_image_new(ImgGrayscale->width,ImgGrayscale->height,3,ImgGrayscale->levels);
+    // IVC* ImgGrayscale;
+    // IVC* AuxImgRGB;
+    // ImgGrayscale = vc_read_image("./Images/FLIR/flir-04.pgm");
+    // AuxImgRGB = vc_image_new(ImgGrayscale->width,ImgGrayscale->height,3,ImgGrayscale->levels);
 
-    vc_scale_gray_to_rgb(ImgGrayscale,AuxImgRGB);
-    vc_write_image("./ImagensGeradas/GrayscaleRGB/grayscaleRGB.ppm", AuxImgRGB); // Write the image with the filename
+    // vc_scale_gray_to_rgb(ImgGrayscale,AuxImgRGB);
+    // vc_write_image("./ImagensGeradas/GrayscaleRGB/grayscaleRGB.ppm", AuxImgRGB); // Write the image with the filename
 
-    vc_image_free(ImgGrayscale);
-    vc_image_free(AuxImgRGB);
+    // vc_image_free(ImgGrayscale);
+    // vc_image_free(AuxImgRGB);
+
+    // ------------------------------------------ //
+    IVC* imagem1;
+    IVC* imagemAux;
+    imagem1 = vc_read_image("./Images/FLIR/chess.pgm");
+    imagemAux = vc_image_new(imagem1->width,imagem1->height,1,imagem1->levels);
+
+    // vc_gray_to_binary(imagem1,imagemAux,100);
+    threshold_media(imagem1,imagemAux);
+    vc_write_image("./ImagensGeradas/Threshold/threshholdf2.pgm", imagemAux); // Write the image with the filename
+
+    vc_image_free(imagem1);
+    vc_image_free(imagemAux);
+
 
     printf("Press any key to exit... In");
     getchar();
+    
 
     return 0;
 }

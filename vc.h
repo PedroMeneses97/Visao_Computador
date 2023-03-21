@@ -64,3 +64,8 @@ int vc_hsv_to_seg(IVC *src, IVC *dst);
 
 // Gray to RGB
 int vc_scale_gray_to_rgb(IVC *src, IVC *dst);
+
+
+int vc_gray_to_binary(IVC *src, IVC *dst, int threshold);
+
+int threshold_media(IVC *src, IVC *dst);
